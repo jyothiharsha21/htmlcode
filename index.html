@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harsha's Kitchen — Modern Indian Dining</title>
+<meta name="description" content="Harsha's Kitchen — modern Indian fine dining in Hyderabad. Explore our menu, our story, and reserve your table.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* ===================== Design tokens ===================== */
+  :root{
+    --ink:#1c1410;
+    --ink-2:#241a14;
+    --ink-soft:#2a2119;
+    --parchment:#f1e9d8;
+    --parchment-dim:#cfc3ac;
+    --saffron:#d79a3c;
+    --saffron-soft:#e8c077;
+    --maroon:#7a2035;
+    --maroon-deep:#5a1727;
+    --clove:#4c5a44;
+    --line: rgba(241,233,216,0.14);
+    --line-strong: rgba(241,233,216,0.28);
+    --shadow: 0 30px 60px -25px rgba(0,0,0,0.6);
+    --radius: 2px;
+    --display: 'Fraunces', serif;
+    --body: 'Manrope', sans-serif;
+    --mono: 'Space Mono', monospace;
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--parchment);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  h1,h2,h3,h4{font-family:var(--display);font-weight:500;margin:0;color:var(--parchment);}
+  p{margin:0;}
+  ul{margin:0;padding:0;list-style:none;}
+  button{font-family:inherit;cursor:pointer;}
+  .container{max-width:1180px;margin:0 auto;padding:0 32px;}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  ::selection{background:var(--maroon);color:var(--parchment);}
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--saffron);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:26px;height:1px;background:var(--saffron);display:inline-block;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:15px 30px;
+    font-family:var(--body);
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    border-radius:var(--radius);
+    border:1px solid transparent;
+    transition:transform .35s var(--ease), background .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease);
+  }
+  .btn-primary{background:var(--saffron);color:var(--ink);}
+  .btn-primary:hover{background:var(--saffron-soft); transform:translateY(-2px);}
+  .btn-ghost{border-color:var(--line-strong); color:var(--parchment);}
+  .btn-ghost:hover{border-color:var(--saffron); color:var(--saffron); transform:translateY(-2px);}
+  .btn:focus-visible{outline:2px solid var(--saffron); outline-offset:3px;}
+
+  /* ===================== Nav ===================== */
+  header.site-nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:22px 0;
+    transition:background .4s var(--ease), padding .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  header.site-nav.scrolled{
+    background:rgba(28,20,16,0.92);
+    backdrop-filter:blur(10px);
+    padding:14px 0;
+    box-shadow:0 10px 30px -20px rgba(0,0,0,.7);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-row{display:flex; align-items:center; justify-content:space-between;}
+  .wordmark{
+    font-family:var(--display);
+    font-style:italic;
+    font-size:22px;
+    letter-spacing:.01em;
+    color:var(--parchment);
+  }
+  .wordmark span{color:var(--saffron);}
+  .nav-links{display:flex; align-items:center; gap:38px;}
+  .nav-links a{
+    font-size:13px; font-weight:600; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--parchment-dim);
+    position:relative;
+    padding-bottom:4px;
+  }
+  .nav-links a::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
+    background:var(--saffron); transform:scaleX(0); transform-origin:left;
+    transition:transform .3s var(--ease);
+  }
+  .nav-links a:hover{color:var(--parchment);}
+  .nav-links a:hover::after{transform:scaleX(1);}
+  .nav-cta{margin-left:6px;}
+  .nav-toggle{display:none; background:none; border:none; padding:6px;}
+  .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after{
+    content:""; display:block; width:24px; height:2px; background:var(--parchment); position:relative; transition:.3s;
+  }
+  .nav-toggle span::before{position:absolute; top:-8px;}
+  .nav-toggle span::after{position:absolute; top:8px;}
+
+  /* ===================== Hero ===================== */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:flex-end;
+    overflow:hidden;
+    isolation:isolate;
+  }
+  .hero-media{
+    position:absolute; inset:0; z-index:-2;
+  }
+  .hero-media img{
+    width:100%; height:100%; object-fit:cover;
+    filter:saturate(1.05) contrast(1.02);
+  }
+  .hero-media::after{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      linear-gradient(0deg, rgba(20,14,10,0.97) 4%, rgba(20,14,10,0.55) 42%, rgba(20,14,10,0.35) 65%, rgba(20,14,10,0.6) 100%),
+      linear-gradient(100deg, rgba(20,14,10,0.9) 0%, rgba(20,14,10,0.15) 55%);
+  }
+  .hero-content{
+    position:relative;
+    padding:220px 0 110px;
+    width:100%;
+  }
+  .hero-eyebrow{margin-bottom:26px;}
+  .hero h1{
+    font-size:clamp(56px, 10vw, 128px);
+    line-height:.94;
+    letter-spacing:-.01em;
+    max-width:900px;
+  }
+  .hero-tagline{
+    margin-top:26px;
+    max-width:460px;
+    font-size:18px;
+    color:var(--parchment-dim);
+    font-style:italic;
+    font-family:var(--display);
+  }
+  .hero-actions{
+    margin-top:44px;
+    display:flex; gap:18px; flex-wrap:wrap;
+  }
+  .hero-stamp{
+    position:absolute;
+    top:150px; right:6%;
+    width:132px; height:132px;
+    opacity:0;
+    animation: stamp-in 1.1s .5s var(--ease) forwards;
+  }
+  @keyframes stamp-in{
+    from{opacity:0; transform:rotate(-24deg) scale(.7);}
+    to{opacity:1; transform:rotate(-9deg) scale(1);}
+  }
+  .scroll-cue{
+    position:absolute; bottom:34px; left:32px;
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--parchment-dim);
+  }
+  .scroll-cue .line{width:1px; height:40px; background:linear-gradient(var(--saffron), transparent); position:relative; overflow:hidden;}
+
+  @media (max-width:720px){
+    .hero-stamp{display:none;}
+    .hero-content{padding:170px 0 90px;}
+  }
+
+  /* ===================== Reveal on scroll ===================== */
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .8s var(--ease), transform .8s var(--ease);}
+  .reveal.is-visible{opacity:1; transform:translateY(0);}
+
+  /* ===================== Section shells ===================== */
+  section{position:relative;}
+  .section-pad{padding:130px 0;}
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:40px;
+    margin-bottom:70px;
+    flex-wrap:wrap;
+  }
+  .section-head h2{font-size:clamp(34px, 4.4vw, 54px); margin-top:18px; max-width:620px;}
+  .section-head .note{max-width:340px; color:var(--parchment-dim); font-size:15px; padding-bottom:6px;}
+
+  hr.rule{border:none; height:1px; background:var(--line); margin:0;}
+
+  /* ===================== Menu ===================== */
+  .menu-section{background:var(--ink-2);}
+  .menu-tabs{
+    display:flex; gap:10px; flex-wrap:wrap; margin-bottom:56px;
+  }
+  .menu-tab{
+    padding:11px 22px;
+    border-radius:999px;
+    border:1px solid var(--line-strong);
+    background:transparent;
+    color:var(--parchment-dim);
+    font-size:13px; font-weight:600; letter-spacing:.03em;
+    transition:all .3s var(--ease);
+  }
+  .menu-tab:hover{border-color:var(--saffron); color:var(--parchment);}
+  .menu-tab.active{background:var(--saffron); border-color:var(--saffron); color:var(--ink);}
+
+  .menu-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:2px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  @media (max-width:900px){ .menu-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:620px){ .menu-grid{grid-template-columns:1fr;} }
+
+  .dish{
+    background:var(--ink-2);
+    padding:34px 30px;
+    display:flex;
+    flex-direction:column;
+    min-height:260px;
+    transition:background .4s var(--ease);
+  }
+  .dish:hover{background:var(--ink-soft);}
+  .dish.hidden{display:none;}
+  .dish-media{
+    margin:-34px -30px 24px;
+    height:190px;
+    overflow:hidden;
+    position:relative;
+  }
+  .dish-media img{width:100%; height:100%; object-fit:cover; transition:transform .7s var(--ease);}
+  .dish:hover .dish-media img{transform:scale(1.06);}
+  .dish-tag{
+    position:absolute; top:14px; left:14px;
+    font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+    background:var(--maroon); color:var(--parchment);
+    padding:5px 10px;
+  }
+  .dish-cat{
+    font-family:var(--mono); font-size:11px; color:var(--saffron); letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px;
+  }
+  .dish-row{
+    display:flex; align-items:baseline; gap:10px; margin-bottom:10px;
+  }
+  .dish-name{font-family:var(--display); font-size:21px; line-height:1.25;}
+  .dish-leader{flex:1; border-bottom:1px dotted var(--line-strong); transform:translateY(-4px); min-width:14px;}
+  .dish-price{font-family:var(--mono); font-size:15px; color:var(--saffron-soft); white-space:nowrap;}
+  .dish-desc{color:var(--parchment-dim); font-size:14.5px; line-height:1.65; margin-top:auto; padding-top:10px;}
+
+  .menu-callout{
+    margin-top:60px;
+    border:1px solid var(--line-strong);
+    padding:44px 46px;
+    display:flex; align-items:center; justify-content:space-between; gap:30px; flex-wrap:wrap;
+    background:linear-gradient(120deg, rgba(122,32,53,0.18), transparent 60%);
+  }
+  .menu-callout h3{font-size:26px; margin-bottom:10px;}
+  .menu-callout p{color:var(--parchment-dim); max-width:480px; font-size:14.5px;}
+
+  /* ===================== About ===================== */
+  .about-section{padding:150px 0;}
+  .about-grid{
+    display:grid;
+    grid-template-columns: .95fr 1.05fr;
+    gap:90px;
+    align-items:center;
+  }
+  @media (max-width:880px){ .about-grid{grid-template-columns:1fr; gap:60px;} }
+  .about-copy h2{font-size:clamp(32px,4vw,46px); margin:18px 0 26px;}
+  .about-copy p{color:var(--parchment-dim); margin-bottom:18px; font-size:15.5px;}
+  .pull-quote{
+    margin:34px 0;
+    padding-left:24px;
+    border-left:2px solid var(--saffron);
+    font-family:var(--display);
+    font-style:italic;
+    font-size:21px;
+    color:var(--parchment);
+  }
+  .pull-quote cite{
+    display:block; margin-top:12px; font-family:var(--mono); font-style:normal; font-size:12px; color:var(--saffron); letter-spacing:.06em; text-transform:uppercase;
+  }
+  .stat-row{display:flex; gap:44px; margin-top:44px; flex-wrap:wrap;}
+  .stat b{font-family:var(--display); font-size:34px; display:block; color:var(--saffron-soft);}
+  .stat span{font-size:12.5px; color:var(--parchment-dim); letter-spacing:.03em;}
+
+  .about-visual{position:relative;}
+  .about-visual .frame-main{
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    aspect-ratio:4/5;
+  }
+  .about-visual .frame-main img{width:100%; height:100%; object-fit:cover;}
+  .about-visual .frame-float{
+    position:absolute;
+    width:44%;
+    bottom:-40px; left:-40px;
+    border:6px solid var(--ink);
+    box-shadow:var(--shadow);
+    aspect-ratio:1/1;
+    overflow:hidden;
+  }
+  .about-visual .frame-float img{width:100%; height:100%; object-fit:cover;}
+  .about-stamp{
+    position:absolute; top:-30px; right:-20px; width:110px; height:110px;
+  }
+  @media (max-width:520px){
+    .about-visual .frame-float{width:50%; left:-16px; bottom:-30px;}
+    .about-stamp{display:none;}
+  }
+
+  /* ===================== Contact / Reservation ===================== */
+  .contact-section{background:var(--ink-2);}
+  .contact-grid{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:2px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  @media (max-width:900px){ .contact-grid{grid-template-columns:1fr;} }
+
+  .reserve-panel, .info-panel{background:var(--ink-2); padding:56px;}
+  @media (max-width:560px){ .reserve-panel, .info-panel{padding:36px 26px;} }
+
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media (max-width:520px){ .field-row{grid-template-columns:1fr;} }
+  .field{margin-bottom:22px;}
+  .field label{
+    display:block; font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--saffron); margin-bottom:9px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--line-strong);
+    color:var(--parchment);
+    font-family:var(--body);
+    font-size:15px;
+    padding:10px 2px;
+    transition:border-color .3s var(--ease);
+  }
+  .field select{ background:var(--ink-2); }
+  .field select option{background:var(--ink-2);}
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:none; border-color:var(--saffron);
+  }
+  .field textarea{resize:vertical; min-height:90px;}
+  .form-note{font-size:13px; color:var(--parchment-dim); margin-top:18px;}
+  .form-success{
+    display:none;
+    padding:22px 24px;
+    border:1px solid var(--saffron);
+    background:rgba(215,154,60,0.08);
+    margin-top:26px;
+    font-size:14.5px;
+  }
+  .form-success.show{display:block;}
+
+  .info-panel h3{font-size:24px; margin-bottom:26px;}
+  .info-block{margin-bottom:34px;}
+  .info-block .label{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--saffron); margin-bottom:8px;}
+  .info-block .value{color:var(--parchment); font-size:15.5px; line-height:1.6;}
+  .hours-table{width:100%; border-collapse:collapse; font-family:var(--mono); font-size:13.5px;}
+  .hours-table td{padding:8px 0; border-bottom:1px dotted var(--line);}
+  .hours-table td:last-child{text-align:right; color:var(--saffron-soft);}
+  .social-row{display:flex; gap:16px; margin-top:8px;}
+  .social-row a{
+    width:38px; height:38px; border:1px solid var(--line-strong); border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    transition:border-color .3s var(--ease), color .3s var(--ease);
+  }
+  .social-row a:hover{border-color:var(--saffron); color:var(--saffron);}
+
+  /* ===================== Footer ===================== */
+  footer{padding:70px 0 34px; border-top:1px solid var(--line);}
+  .footer-top{
+    display:flex; justify-content:space-between; gap:50px; flex-wrap:wrap; margin-bottom:60px;
+  }
+  .footer-brand .wordmark{font-size:26px; margin-bottom:14px; display:inline-block;}
+  .footer-brand p{color:var(--parchment-dim); max-width:280px; font-size:14px;}
+  .footer-cols{display:flex; gap:70px; flex-wrap:wrap;}
+  .footer-col h4{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--saffron); margin-bottom:16px;}
+  .footer-col a, .footer-col p{display:block; color:var(--parchment-dim); font-size:14px; margin-bottom:10px;}
+  .footer-col a:hover{color:var(--parchment);}
+  .footer-bottom{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+    padding-top:28px; border-top:1px solid var(--line);
+    font-size:12.5px; color:var(--parchment-dim);
+  }
+  .footer-stamp{width:56px; height:56px; opacity:.85;}
+
+  /* ===================== Mobile nav ===================== */
+  @media (max-width:860px){
+    .nav-links{
+      position:fixed; inset:0 0 0 auto; width:78%; max-width:340px;
+      background:var(--ink-2); flex-direction:column; align-items:flex-start;
+      padding:100px 34px 34px; gap:26px;
+      transform:translateX(100%); transition:transform .4s var(--ease);
+      border-left:1px solid var(--line);
+    }
+    .nav-links.open{transform:translateX(0);}
+    .nav-toggle{display:block;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<header class="site-nav" id="siteNav">
+  <div class="container nav-row">
+    <a href="#home" class="wordmark">Harsha<span>'</span>s Kitchen</a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#menu">Menu</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact" class="btn btn-primary nav-cta">Reserve</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span></button>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="home">
+  <div class="hero-media">
+    <img src="https://images.unsplash.com/photo-1742599361498-79824d24e355?w=1800&q=80&auto=format&fit=crop" alt="Signature butter chicken at Harsha's Kitchen, simmered in a tomato-butter gravy">
+  </div>
+
+  <svg class="hero-stamp" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs><path id="stampCurve" d="M 100,100 m -78,0 a 78,78 0 1,1 156,0 a 78,78 0 1,1 -156,0"/></defs>
+    <circle cx="100" cy="100" r="96" fill="none" stroke="#d79a3c" stroke-width="1.5" stroke-dasharray="2 5"/>
+    <circle cx="100" cy="100" r="78" fill="none" stroke="#d79a3c" stroke-width="1"/>
+    <text fill="#f1e9d8" font-family="Space Mono, monospace" font-size="10.5" letter-spacing="3">
+      <textPath href="#stampCurve" startOffset="2%">HARSHA'S KITCHEN &#8226; EST. 2012 &#8226; HYDERABAD &#8226;</textPath>
+    </text>
+    <text x="100" y="94" text-anchor="middle" fill="#e8c077" font-family="Fraunces, serif" font-style="italic" font-size="34">HK</text>
+    <text x="100" y="118" text-anchor="middle" fill="#f1e9d8" font-family="Space Mono, monospace" font-size="8" letter-spacing="2">FIRE &amp; SPICE</text>
+  </svg>
+
+  <div class="container hero-content">
+    <p class="eyebrow hero-eyebrow">Modern Indian Dining — Est. 2012</p>
+    <h1>Harsha's<br>Kitchen</h1>
+    <p class="hero-tagline">Spice, patience and fire — the way my grandmother taught me, plated the way I always dreamed it.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-primary">Reserve a Table</a>
+      <a href="#menu" class="btn btn-ghost">See the Menu</a>
+    </div>
+  </div>
+
+  <div class="scroll-cue"><span class="line"></span> Scroll</div>
+</section>
+
+<!-- ===================== MENU ===================== -->
+<section class="menu-section section-pad" id="menu">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <p class="eyebrow">The Menu</p>
+        <h2>Dishes worth the drive across town.</h2>
+      </div>
+      <p class="note">Every dish is built from spice blends we grind each morning — nothing sits on the shelf longer than a day.</p>
+    </div>
+
+    <div class="menu-tabs reveal">
+      <button class="menu-tab active" data-filter="all">All</button>
+      <button class="menu-tab" data-filter="starters">Starters</button>
+      <button class="menu-tab" data-filter="mains">Mains</button>
+      <button class="menu-tab" data-filter="breads">Breads &amp; Rice</button>
+      <button class="menu-tab" data-filter="desserts">Desserts</button>
+      <button class="menu-tab" data-filter="drinks">Drinks</button>
+    </div>
+
+    <div class="menu-grid reveal">
+
+      <!-- Starters -->
+      <div class="dish" data-category="starters">
+        <p class="dish-cat">Starters</p>
+        <div class="dish-row"><span class="dish-name">Tandoori Prawns</span><span class="dish-leader"></span><span class="dish-price">$18</span></div>
+        <p class="dish-desc">Char-grilled tiger prawns, Kashmiri chili marinade, cooling mint yogurt.</p>
+      </div>
+
+      <div class="dish" data-category="starters">
+        <p class="dish-cat">Starters</p>
+        <div class="dish-row"><span class="dish-name">Paneer Tikka</span><span class="dish-leader"></span><span class="dish-price">$14</span></div>
+        <p class="dish-desc">Smoked house paneer, charred bell pepper and onion, green chutney.</p>
+      </div>
+
+      <div class="dish" data-category="starters">
+        <p class="dish-cat">Starters</p>
+        <div class="dish-row"><span class="dish-name">Samosa Trio</span><span class="dish-leader"></span><span class="dish-price">$12</span></div>
+        <p class="dish-desc">Spiced potato, lamb keema, and green pea, with tamarind and mint dips.</p>
+      </div>
+
+      <div class="dish" data-category="starters">
+        <p class="dish-cat">Starters</p>
+        <div class="dish-row"><span class="dish-name">Chili Garlic Soft-Shell Crab</span><span class="dish-leader"></span><span class="dish-price">$19</span></div>
+        <p class="dish-desc">Bengali five-spice, curry leaf, a squeeze of lime.</p>
+      </div>
+
+      <!-- Mains -->
+      <div class="dish" data-category="mains">
+        <div class="dish-media">
+          <span class="dish-tag">Signature</span>
+          <img src="https://images.unsplash.com/photo-1742599361498-79824d24e355?w=800&q=80&auto=format&fit=crop" alt="Butter chicken — tandoor-roasted chicken in tomato-butter gravy">
+        </div>
+        <p class="dish-cat">Mains</p>
+        <div class="dish-row"><span class="dish-name">Murgh Makhani</span><span class="dish-leader"></span><span class="dish-price">$28</span></div>
+        <p class="dish-desc">Tandoor-roasted chicken, tomato-butter gravy, fenugreek, a whisper of smoke.</p>
+      </div>
+
+      <div class="dish" data-category="mains">
+        <div class="dish-media">
+          <span class="dish-tag">Signature</span>
+          <img src="https://images.unsplash.com/photo-1559528896-c5310744cce8?w=800&q=80&auto=format&fit=crop" alt="Hyderabadi dum biryani with slow-cooked lamb and saffron rice">
+        </div>
+        <p class="dish-cat">Mains</p>
+        <div class="dish-row"><span class="dish-name">Hyderabadi Dum Biryani</span><span class="dish-leader"></span><span class="dish-price">$32</span></div>
+        <p class="dish-desc">Slow-cooked lamb, saffron, caramelized onion, sealed and steamed to order.</p>
+      </div>
+
+      <div class="dish" data-category="mains">
+        <p class="dish-cat">Mains</p>
+        <div class="dish-row"><span class="dish-name">Palak Paneer</span><span class="dish-leader"></span><span class="dish-price">$24</span></div>
+        <p class="dish-desc">House paneer, wilted spinach, garlic and cumin tempering.</p>
+      </div>
+
+      <div class="dish" data-category="mains">
+        <p class="dish-cat">Mains</p>
+        <div class="dish-row"><span class="dish-name">Goan Fish Curry</span><span class="dish-leader"></span><span class="dish-price">$30</span></div>
+        <p class="dish-desc">Catch of the day, coconut, kokum, curry leaf.</p>
+      </div>
+
+      <div class="dish" data-category="mains">
+        <p class="dish-cat">Mains</p>
+        <div class="dish-row"><span class="dish-name">Kadai Vegetables</span><span class="dish-leader"></span><span class="dish-price">$22</span></div>
+        <p class="dish-desc">Seasonal vegetables, kadai masala, bell pepper, fresh coriander.</p>
+      </div>
+
+      <!-- Breads & Rice -->
+      <div class="dish" data-category="breads">
+        <p class="dish-cat">Breads &amp; Rice</p>
+        <div class="dish-row"><span class="dish-name">Garlic Naan</span><span class="dish-leader"></span><span class="dish-price">$6</span></div>
+        <p class="dish-desc">Tandoor-baked, brushed with roasted garlic butter.</p>
+      </div>
+
+      <div class="dish" data-category="breads">
+        <p class="dish-cat">Breads &amp; Rice</p>
+        <div class="dish-row"><span class="dish-name">Lachha Paratha</span><span class="dish-leader"></span><span class="dish-price">$6</span></div>
+        <p class="dish-desc">Layered whole-wheat flatbread, crisped in ghee.</p>
+      </div>
+
+      <div class="dish" data-category="breads">
+        <p class="dish-cat">Breads &amp; Rice</p>
+        <div class="dish-row"><span class="dish-name">Saffron Pulao</span><span class="dish-leader"></span><span class="dish-price">$9</span></div>
+        <p class="dish-desc">Basmati rice, whole spices, toasted cashew.</p>
+      </div>
+
+      <!-- Desserts -->
+      <div class="dish" data-category="desserts">
+        <div class="dish-media">
+          <span class="dish-tag">Signature</span>
+          <img src="https://images.unsplash.com/photo-1593701461250-d7b22dfd3a77?w=800&q=80&auto=format&fit=crop" alt="Gulab jamun — warm milk dumplings in rose-cardamom syrup">
+        </div>
+        <p class="dish-cat">Desserts</p>
+        <div class="dish-row"><span class="dish-name">Gulab Jamun</span><span class="dish-leader"></span><span class="dish-price">$10</span></div>
+        <p class="dish-desc">Warm milk dumplings, rose-cardamom syrup, crushed pistachio.</p>
+      </div>
+
+      <div class="dish" data-category="desserts">
+        <p class="dish-cat">Desserts</p>
+        <div class="dish-row"><span class="dish-name">Kesar Pista Kulfi</span><span class="dish-leader"></span><span class="dish-price">$11</span></div>
+        <p class="dish-desc">Saffron pistachio ice cream, set the traditional way, silver leaf.</p>
+      </div>
+
+      <div class="dish" data-category="desserts">
+        <p class="dish-cat">Desserts</p>
+        <div class="dish-row"><span class="dish-name">Gajar Halwa</span><span class="dish-leader"></span><span class="dish-price">$10</span></div>
+        <p class="dish-desc">Slow-cooked carrot, khoya, ghee, toasted almond.</p>
+      </div>
+
+      <!-- Drinks -->
+      <div class="dish" data-category="drinks">
+        <p class="dish-cat">Drinks</p>
+        <div class="dish-row"><span class="dish-name">Masala Chai</span><span class="dish-leader"></span><span class="dish-price">$6</span></div>
+        <p class="dish-desc">Hand-ground spice blend, slow-simmered with milk.</p>
+      </div>
+
+      <div class="dish" data-category="drinks">
+        <p class="dish-cat">Drinks</p>
+        <div class="dish-row"><span class="dish-name">Mango Lassi</span><span class="dish-leader"></span><span class="dish-price">$8</span></div>
+        <p class="dish-desc">Alphonso mango, house yogurt, a touch of cardamom.</p>
+      </div>
+
+      <div class="dish" data-category="drinks">
+        <p class="dish-cat">Drinks</p>
+        <div class="dish-row"><span class="dish-name">Saffron Rose Sharbat</span><span class="dish-leader"></span><span class="dish-price">$9</span></div>
+        <p class="dish-desc">Rose water, saffron, lime, soda.</p>
+      </div>
+
+    </div>
+
+    <div class="menu-callout reveal">
+      <div>
+        <h3>Chef's Tasting Menu</h3>
+        <p>Six courses chosen nightly by Chef Harsha, paired with tea or wine on request. Best for celebrations and first visits alike.</p>
+      </div>
+      <a href="#contact" class="btn btn-ghost">Ask Your Server</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ABOUT ===================== -->
+<section class="about-section" id="about">
+  <div class="container about-grid">
+    <div class="about-copy reveal">
+      <p class="eyebrow">Our Story</p>
+      <h2>A recipe book, three generations deep.</h2>
+      <p>Harsha grew up in a Hyderabad kitchen where spice was measured by hand and biryani was sealed shut with dough, never a lid. She learned patience before she learned knife skills — how a curry needs its full hour, how a tandoor forgives nothing rushed.</p>
+      <p>Harsha's Kitchen opened in 2012 to put that patience on a plate: recipes carried across three generations, refined with modern technique but never simplified. We grind our spice blends every morning and change the tasting menu with the seasons, but the method underneath stays exactly as she was taught it.</p>
+      <blockquote class="pull-quote">
+        "A good curry can't be hurried. Every dish on this menu still takes as long as my grandmother said it should."
+        <cite>— Harsha, Chef &amp; Founder</cite>
+      </blockquote>
+      <div class="stat-row">
+        <div class="stat"><b>2012</b><span>Year founded</span></div>
+        <div class="stat"><b>5</b><span>Regional cuisines represented</span></div>
+        <div class="stat"><b>18</b><span>Spice blends, ground daily</span></div>
+      </div>
+    </div>
+
+    <div class="about-visual reveal">
+      <div class="frame-main">
+        <img src="https://images.unsplash.com/photo-1559528896-c5310744cce8?w=900&q=80&auto=format&fit=crop" alt="Hyderabadi dum biryani plated for service">
+      </div>
+      <div class="frame-float">
+        <img src="https://images.unsplash.com/photo-1593701461250-d7b22dfd3a77?w=500&q=80&auto=format&fit=crop" alt="Gulab jamun dessert close-up">
+      </div>
+      <svg class="about-stamp" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="100" cy="100" r="96" fill="none" stroke="#d79a3c" stroke-width="1.5" stroke-dasharray="2 5"/>
+        <circle cx="100" cy="100" r="78" fill="none" stroke="#d79a3c" stroke-width="1"/>
+        <text fill="#f1e9d8" font-family="Space Mono, monospace" font-size="10.5" letter-spacing="3">
+          <textPath href="#stampCurve" startOffset="2%">HARSHA'S KITCHEN &#8226; EST. 2012 &#8226; HYDERABAD &#8226;</textPath>
+        </text>
+        <text x="100" y="94" text-anchor="middle" fill="#e8c077" font-family="Fraunces, serif" font-style="italic" font-size="34">HK</text>
+        <text x="100" y="118" text-anchor="middle" fill="#f1e9d8" font-family="Space Mono, monospace" font-size="8" letter-spacing="2">FIRE &amp; SPICE</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT / RESERVATION ===================== -->
+<section class="contact-section section-pad" id="contact">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <p class="eyebrow">Reservations</p>
+        <h2>Save your table.</h2>
+      </div>
+      <p class="note">Parties of eight or more, and full tasting-menu bookings, are best arranged by phone.</p>
+    </div>
+
+    <div class="contact-grid reveal">
+      <div class="reserve-panel">
+        <form id="reserveForm" novalidate>
+          <div class="field-row">
+            <div class="field">
+              <label for="fullName">Full name</label>
+              <input type="text" id="fullName" required>
+            </div>
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" required>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="resDate">Date</label>
+              <input type="date" id="resDate" required>
+            </div>
+            <div class="field">
+              <label for="resTime">Time</label>
+              <input type="time" id="resTime" required>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="guests">Guests</label>
+              <select id="guests" required>
+                <option value="">Select</option>
+                <option>1</option><option>2</option><option>3</option><option>4</option>
+                <option>5</option><option>6</option><option>7</option><option>8+</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="occasion">Occasion</label>
+              <select id="occasion">
+                <option value="">None in particular</option>
+                <option>Anniversary</option>
+                <option>Birthday</option>
+                <option>Business dinner</option>
+                <option>Celebration</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="notes">Special requests</label>
+            <textarea id="notes" placeholder="Allergies, seating preference, anything else we should know."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Request a Table</button>
+          <p class="form-note">We'll confirm by phone or email within a few hours. This form is a demo and does not send a live booking.</p>
+
+          <div class="form-success" id="formSuccess">
+            Thank you — your request has been noted. We'll be in touch shortly to confirm your table.
+          </div>
+        </form>
+      </div>
+
+      <div class="info-panel">
+        <h3>Visit Us</h3>
+        <div class="info-block">
+          <p class="label">Address</p>
+          <p class="value">12 Begumpet Road<br>Hyderabad, Telangana 500016</p>
+        </div>
+        <div class="info-block">
+          <p class="label">Phone &amp; Email</p>
+          <p class="value">+91 40 2345 6789<br>reserve@harshaskitchen.example</p>
+        </div>
+        <div class="info-block">
+          <p class="label">Hours</p>
+          <table class="hours-table">
+            <tr><td>Tue – Thu</td><td>6:00 PM – 11:00 PM</td></tr>
+            <tr><td>Fri – Sun</td><td>12:00 PM – 3:00 PM, 6:00 PM – 11:30 PM</td></tr>
+            <tr><td>Monday</td><td>Closed</td></tr>
+          </table>
+        </div>
+        <div class="info-block">
+          <p class="label">Follow</p>
+          <div class="social-row">
+            <a href="#" aria-label="Instagram">IG</a>
+            <a href="#" aria-label="Facebook">FB</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="wordmark">Harsha<span style="color:var(--saffron)">'</span>s Kitchen</span>
+        <p>Modern Indian dining in Hyderabad, rooted in three generations of family recipes.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <a href="#home">Home</a>
+          <a href="#menu">Menu</a>
+          <a href="#about">About</a>
+          <a href="#contact">Reservations</a>
+        </div>
+        <div class="footer-col">
+          <h4>Visit</h4>
+          <p>12 Begumpet Road</p>
+          <p>Hyderabad, Telangana</p>
+          <p>+91 40 2345 6789</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Harsha's Kitchen. All rights reserved.</span>
+      <svg class="footer-stamp" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="100" cy="100" r="96" fill="none" stroke="#d79a3c" stroke-width="2"/>
+        <text x="100" y="94" text-anchor="middle" fill="#e8c077" font-family="Fraunces, serif" font-style="italic" font-size="34">HK</text>
+        <text x="100" y="118" text-anchor="middle" fill="#f1e9d8" font-family="Space Mono, monospace" font-size="8" letter-spacing="2">EST 2012</text>
+      </svg>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ---- Nav scroll state ----
+  const nav = document.getElementById('siteNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ---- Mobile nav toggle ----
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // ---- Scroll reveal ----
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // ---- Menu filtering ----
+  const tabs = document.querySelectorAll('.menu-tab');
+  const dishes = document.querySelectorAll('.dish');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.dataset.filter;
+      dishes.forEach(dish => {
+        const show = filter === 'all' || dish.dataset.category === filter;
+        dish.classList.toggle('hidden', !show);
+      });
+    });
+  });
+
+  // ---- Reservation form (demo, no backend) ----
+  const form = document.getElementById('reserveForm');
+  const success = document.getElementById('formSuccess');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    success.classList.add('show');
+    form.reset();
+    success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+</script>
+</body>
+</html>
